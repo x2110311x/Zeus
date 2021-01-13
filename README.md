@@ -13,4 +13,4 @@ This repo's primary focus is for that goal.
 That being said, I will still publicly maintain it for educational purposes. You could also run it yourself, but that's up to you, and I would highly prefer some sort of credit if you do.
 
 ## License
-This project is licensed under the [MIT](LICENCE) license.
+This project is licensed under the [MIT](LICENSE) license.
