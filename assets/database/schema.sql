@@ -638,3 +638,59 @@ CREATE TABLE `warnings` (
   CONSTRAINT `WarningsUsers_WarnedUser` FOREIGN KEY (`User`) REFERENCES `users` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Stores warnings for users';
 
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`daily`(IN u_id bigint, IN d_reward INT, IN u_dailyt int)
+BEGIN
+	UPDATE Dailies SET DailyUses = DailyUses+1, LastDaily = u_dailyt WHERE User = u_id;
+	SELECT Credits INTO @prev FROM Credits WHERE User = u_id LIMIT 1;
+	UPDATE Credits SET Credits = Credits+d_reward WHERE User = u_id;
+	INSERT INTO transactions(User, Type, Time, Amount, PreviousBalance, NewBalance)
+		VALUES(u_id, 1, u_dailyt, d_reward, @prev, (@prev + d_reward) );
+END $$
+DELIMITER ;;
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`update_nickname`(IN u_id bigint, IN u_name VARCHAR(38), IN u_changet int)
+BEGIN
+	SELECT Nickname INTO @old FROM Users WHERE Users.ID = u_id LIMIT 1;
+	INSERT INTO nicknamechanges(User, Old, New, Time) VALUES(u_id, @old, u_name, u_changet);
+	UPDATE Users SET Nickname = u_name WHERE ID = u_id;
+END $$
+DELIMITER ;;
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`update_username`(IN u_id bigint, IN u_uname VARCHAR(38), IN u_changet int)
+BEGIN
+	SELECT Username INTO @old FROM Users WHERE Users.ID = u_id LIMIT 1;
+	INSERT INTO usernamechanges(User, Old, New, Time) VALUES(u_id, @old, u_uname, u_changet);
+	UPDATE Users SET Username = u_name WHERE ID = u_id;
+END $$
+DELIMITER ;;
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`user_join`(IN u_id bigint, IN u_name VARCHAR(38), IN u_create int, IN u_joint int)
+BEGIN
+	IF NOT EXISTS ( SELECT 1 FROM Users WHERE ID = u_id) THEN	
+		INSERT INTO Users (ID, Username, CreationDate) VALUES (u_id, u_name, u_create);
+		INSERT INTO Credits (User) VALUES (u_id);
+		INSERT INTO Dailies (User) VALUES (u_id);
+		INSERT INTO Levels (User) VALUES (u_id);
+	ELSE
+		UPDATE Users SET ActiveUser=1 WHERE ID=u_id;
+		IF (SELECT Username FROM Users WHERE ID=u_id) != u_name THEN
+			CALL update_username(u_id, u_name, u_joint);
+		END IF;
+		CALL update_nickname(u_id, NULL , u_joint);
+	END IF;
+	INSERT INTO Joins (User, Time) VALUES (u_id, u_joint);
+END $$
+DELIMITER ;;
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`user_leave`(IN u_id bigint, IN u_leavet int)
+BEGIN
+	UPDATE Users SET ActiveUser=0 WHERE ID=u_id;
+	INSERT INTO Leaves (User, Time) VALUES (u_id, u_leavet);
+END $$
+DELIMITER ;;
