@@ -332,6 +332,26 @@ BEGIN
 END $$
 DELIMITER ;;
 
+
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE `zeus`.`ScoreCard`(IN userid BIGINT)
+BEGIN
+	SELECT LvlCard.Points, LvlCard.Rank, Credits.Credits, COUNT(Golds.ID) as Golds, Dailies.DailyUses
+	FROM (
+		SELECT User, Points, FIND_IN_SET( Points, (
+		SELECT GROUP_CONCAT( DISTINCT Points
+		ORDER BY Points DESC ) FROM Levels)
+		) AS rank
+		FROM Levels
+		ORDER BY Points DESC
+		) as LvlCard
+	INNER JOIN Credits on Credits.User = LvlCard.User
+	LEFT JOIN Golds on Golds.User = LvlCard.User
+	LEFT JOIN Dailies on Dailies.User = LvlCard.User
+	WHERE LvlCard.User = userid;
+END $$
+DELIMITER ;;
+
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE `zeus`.`update_nickname`(IN u_id bigint, IN u_name VARCHAR(38), IN u_changet int)
 BEGIN
