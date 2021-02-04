@@ -1,4 +1,4 @@
 
 testEnv/*
 config/config.ini
-workspace.code-workspace
+*.code-workspace
