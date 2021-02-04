@@ -2,3 +2,4 @@
 testEnv/*
 config/config.ini
 *.code-workspace
+*.pyc
