@@ -72,7 +72,7 @@ class Config:
             self.botName = config.get("Misc", "botName", fallback=ConfigDefaults.botName)
 
         except ValueError as e:
-            log.critical(f"Error parsing config fields - likely an integer field missing or blank {e}")
+            log.critical(f"Error parsing config fields - likely an integer field missing or blank")
             raise Exception("Error parsing config fields - likely an integer field missing or blank. Check log for more details")
 
     def get_all_keys(self, conf):
