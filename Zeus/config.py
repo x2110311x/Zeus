@@ -65,6 +65,12 @@ class Config:
             self.redditFeed_channel = config.getint("SocialMedia", "subreddit_Feed", fallback=ConfigDefaults.redditFeed_channel)
             self.instagramFeed_account = config.get("SocialMedia", "instagram_account", fallback=ConfigDefaults.instagramFeed_account)
             self.instagramFeed_channel = config.getint("SocialMedia", "instagram_Feed", fallback=ConfigDefaults.instagramFeed_channel)
+
+            # Misc
+            self.ownerID = config.get("Misc", "OwnerID", fallback=ConfigDefaults.ownerID)
+            self.serverName = config.get("Misc", "serverName", fallback=ConfigDefaults.serverName)
+            self.botName = config.get("Misc", "botName", fallback=ConfigDefaults.botName)
+
         except ValueError as e:
             log.critical(f"Error parsing config fields - likely an integer field missing or blank {e}")
             raise Exception("Error parsing config fields - likely an integer field missing or blank. Check log for more details")
@@ -130,10 +136,10 @@ class ConfigDefaults:
 
     youtubeAPIKey = None
 
-
-    dbHost = None
-    dbName = None
-    dbUser = None
+    # Database
+    dbHost = "localhost"
+    dbName = "Zeus"
+    dbUser = "Zeus"
     dbpass = None
 
     # Logs
@@ -151,8 +157,8 @@ class ConfigDefaults:
 
     # Gold
     gold_emoji = None
-    gold_cost = None
-    gold_cooldown = None
+    gold_cost = 500
+    gold_cooldown = 0
     gold_channel = None
 
     # Social Media
@@ -164,3 +170,8 @@ class ConfigDefaults:
     redditFeed_channel = None
     instagramFeed_account = None
     instagramFeed_channel = None
+
+    # Misc
+    ownerID = 207129652345438211
+    serverName = None
+    botName = "Zeus"
