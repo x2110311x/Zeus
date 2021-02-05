@@ -70,6 +70,7 @@ class Config:
             self.ownerID = config.get("Misc", "OwnerID", fallback=ConfigDefaults.ownerID)
             self.serverName = config.get("Misc", "serverName", fallback=ConfigDefaults.serverName)
             self.botName = config.get("Misc", "botName", fallback=ConfigDefaults.botName)
+            self.commandPrefix = config.get("Misc", "commandPrefix", fallback=ConfigDefaults.commandPrefix)
 
         except ValueError as e:
             log.critical(f"Error parsing config fields - likely an integer field missing or blank")
@@ -124,6 +125,9 @@ class ConfigDefaults:
     # Example Config File
     exConfigFile = "config/example_config.ini"
 
+    # Default Config File
+    config_file = "config/config.ini"
+
     # Credentials
     bottoken = None
 
@@ -175,3 +179,4 @@ class ConfigDefaults:
     ownerID = 207129652345438211
     serverName = None
     botName = "Zeus"
+    commandPrefix = "!"
