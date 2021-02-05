@@ -40,9 +40,10 @@ class InitClass:
         return '\n'.join(lines)
 
     def load_module(self, name):
-        import_chain = tuple(self._get_import_chain(until='from .bot import MusicBot'))
+        import_chain = tuple(self._get_import_chain(until='from .bot import ZeusBot'))
         import_tb = self._format_import_chain(import_chain)
 
+from .bot import ZeusBot
 __all__ = ['Zeus']
 
 _func_prototype = "def {logger_func_name}(self, message, *args, **kwargs):\n" \
@@ -70,7 +71,7 @@ def _add_logger_level(levelname, level, *, func_name = None):
 
 
 _add_logger_level('EVERYTHING', 1)
-_add_logger_level('ExternalAPI', 4)
+_add_logger_level('EXTERNALAPI', 4)
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.EVERYTHING)
