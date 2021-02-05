@@ -1,4 +1,4 @@
-
 testEnv/*
-Zeus.code-workspace
+config/config.ini
+*.code-workspace
 *.pyc
