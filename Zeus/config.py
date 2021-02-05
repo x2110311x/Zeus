@@ -71,11 +71,26 @@ class Config:
             self.serverName = config.get("Misc", "serverName", fallback=ConfigDefaults.serverName)
             self.botName = config.get("Misc", "botName", fallback=ConfigDefaults.botName)
             self.commandPrefix = config.get("Misc", "commandPrefix", fallback=ConfigDefaults.commandPrefix)
+            self.debug_level = config.get("Misc", "debug_level", fallback=ConfigDefaults.debug_level)
+            self.debug_level_str = self.debug_level
+
+            self.debug_mode = False
 
         except ValueError as e:
-            log.critical(f"Error parsing config fields - likely an integer field missing or blank")
+            log.critical(f"Error parsing config fields - likely an integer field missing or blank", exc_info=True)
             raise Exception("Error parsing config fields - likely an integer field missing or blank. Check log for more details")
+        
 
+        if hasattr(logging, self.debug_level.upper()):
+            self.debug_level = getattr(logging, self.debug_level.upper())
+        else:
+            log.warning("Invalid DebugLevel option \"{}\" given, falling back to INFO".format(self.debug_level_str))
+            self.debug_level = logging.INFO
+            self.debug_level_str = 'INFO'
+
+        self.debug_mode = self.debug_level <= logging.DEBUG
+
+        
     def get_all_keys(self, conf):
         """Returns all config keys as a list"""
         sections = dict(conf.items())
@@ -158,6 +173,8 @@ class ConfigDefaults:
     kick_log_channel = None
     vc_log_channel = None
     role_log_channel = None
+    debug_level = "INFO"
+    debug_mode = False
 
     # Gold
     gold_emoji = None
