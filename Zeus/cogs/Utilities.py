@@ -5,7 +5,7 @@ from discord.ext import commands
 from .. import exceptions
 from ..utilities import Utilities
 
-class cUtilities(commands.Cog, name="Utility Commands"):
+class cogUtilities(commands.Cog, name="Utility Commands"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -30,4 +30,4 @@ class cUtilities(commands.Cog, name="Utility Commands"):
         raise exceptions.ShutdownSignal
     
 def setup(bot):
-    bot.add_cog(cUtilities(bot))
+    bot.add_cog(cogUtilities(bot))
