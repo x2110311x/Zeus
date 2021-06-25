@@ -43,10 +43,10 @@ class Config:
             self.edit_log_channel = config.getint("Logs", "edit_log", fallback=ConfigDefaults.edit_log_channel)
             self.join_log_channel = config.getint("Logs", "join_log", fallback=ConfigDefaults.join_log_channel)
             self.leave_log_channel = config.getint("Logs", "leave_log", fallback=ConfigDefaults.leave_log_channel)
+            self.invite_log_channel = config.getint("Logs", "leave_log", fallback=ConfigDefaults.invite_log_channel)
             self.staffCommands_log_channel = config.getint("Logs", "staff_command_log", fallback=ConfigDefaults.staffCommands_log_channel)
             self.slur_log_channel = config.getint("Logs", "slur_log", fallback=ConfigDefaults.slur_log_channel)
             self.ban_log_channel = config.getint("Logs", "ban_log", fallback=ConfigDefaults.ban_log_channel)
-            self.kick_log_channel = config.getint("Logs", "kick_log", fallback=ConfigDefaults.kick_log_channel)
             self.vc_log_channel = config.getint("Logs", "vc_log", fallback=ConfigDefaults.vc_log_channel)
             self.role_log_channel = config.getint("Logs", "role_log", fallback=ConfigDefaults.role_log_channel)
 
@@ -69,7 +69,9 @@ class Config:
             # Misc
             self.ownerID = config.get("Misc", "OwnerID", fallback=ConfigDefaults.ownerID)
             self.serverName = config.get("Misc", "serverName", fallback=ConfigDefaults.serverName)
+            self.serverID = config.get("Misc", "serverID", fallback=ConfigDefaults.serverID)
             self.botName = config.get("Misc", "botName", fallback=ConfigDefaults.botName)
+            self.staffRole = config.get("Misc", "staffRole", fallback=ConfigDefaults.staffRole)
             self.commandPrefix = config.get("Misc", "commandPrefix", fallback=ConfigDefaults.commandPrefix)
             self.debug_level = config.get("Misc", "debug_level", fallback=ConfigDefaults.debug_level)
             self.debug_level_str = self.debug_level
@@ -126,7 +128,7 @@ class Config:
                 log.info(f"Please add .ini to the config_file name")
             elif os.path.isfile("config/example_config.ini"):
                 shutil.copy("config/example_config.ini", self.config_file)
-                log.warning("Config was not found. Copying exmaple_config.ini")
+                log.warning("Config was not found. Copying example_config.ini")
             else:
                 log.critical("The config file is missing. Please grab the example_config.ini from the GitHub Repo")
                 raise Exception("The config file is missing. Please grab the example_config.ini from the GitHub Repo")
@@ -167,10 +169,10 @@ class ConfigDefaults:
     edit_log_channel = None
     join_log_channel = None
     leave_log_channel = None
+    invite_log_channel = None
     staffCommands_log_channel = None
     slur_log_channel = None
     ban_log_channel = None
-    kick_log_channel = None
     vc_log_channel = None
     role_log_channel = None
     debug_level = "INFO"
@@ -195,5 +197,7 @@ class ConfigDefaults:
     # Misc
     ownerID = 207129652345438211
     serverName = None
+    serverID = None
+    staffRole = None
     botName = "Zeus"
     commandPrefix = "!"
